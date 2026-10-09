@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaSemplice from '../components/PaginaSemplice.astro';
+import V from '../components/V.astro';
+import { info, resort, integrazioni } from '../data/resort';
+
+const faq = info.map((i) => ({
+  '@type': 'Question',
+  name: i.titolo,
+  acceptedAnswer: { '@type': 'Answer', text: i.righe.join(' ') },
+}));
+---
+<Base
+  title="Info pratiche"
+  description="Check-in, check-out, skibus, animali, bambini, tassa di soggiorno e come arrivare a Pietre Gemelle Resort, tra Riva Valdobbia e Alagna Valsesia."
+  schema={[{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq }]}
+>
+  <PaginaSemplice eyebrow="Info pratiche" titolo="Tutto quello<br />che c’è da sapere." lead="Se manca qualcosa, chiamateci: in reception rispondiamo volentieri." />
+
+  <section class="ip theme-light" data-theme="light">
+    <div class="wrap ip-grid">
+      <aside class="ip-stato">
+        <p class="ip-ora">A Riva Valdobbia sono le <strong data-ora-ora>—:—</strong></p>
+        <p>Alba <span data-ora-alba>—</span> · tramonto <span data-ora-tramonto>—</span></p>
+        <p class="ip-chiuso" data-stato-chiuso hidden></p>
+        <p class="ip-tel"><a class="link" href={`tel:${resort.telefono.replace(/\s/g, '')}`}>{resort.telefono}</a></p>
+      </aside>
+      <div class="ip-lista">
+        {info.map((i, n) => (
+          <details class="ip-voce" open={n < 2}>
+            <summary><h2 class="display">{i.titolo}</h2><span class="ip-piu" aria-hidden="true"></span></summary>
+            <div class="ip-corpo">
+              {i.righe.map((r) => <p>{r}</p>)}
+              {i.verifica && <p class="ip-verifica"><V nota={i.verifica}>{i.verifica}</V></p>}
+            </div>
+          </details>
+        ))}
+        <details class="ip-voce">
+          <summary><h2 class="display">Webcam</h2><span class="ip-piu" aria-hidden="true"></span></summary>
+          <div class="ip-corpo">
+            {integrazioni.webcam ? <img src={integrazioni.webcam} alt="Webcam sul resort e sul Monte Rosa" loading="lazy" /> :
+              <p><V nota="La webcam del vecchio sito non funziona: serve la fonte attuale.">La webcam sul Monte Rosa sarà collegata qui.</V></p>}
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ip { padding-bottom: clamp(5rem, 10vw, 8rem); }
+  .ip-grid { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .ip-grid { grid-template-columns: 1fr 2fr; gap: 4rem; align-items: start; } .ip-stato { position: sticky; top: 6rem; } }
+  .ip-stato { display: grid; gap: 0.4rem; padding: 1.5rem; border-radius: 0.5rem; background: var(--color-calce); font-size: 0.9375rem; }
+  .ip-ora strong { font-variant-numeric: tabular-nums; }
+  .ip-tel { margin-top: 0.75rem; font-weight: 560; }
+  .ip-voce { border-top: 1px solid var(--color-pietra); }
+  .ip-voce:last-child { border-bottom: 1px solid var(--color-pietra); }
+  .ip-voce summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem 0; cursor: pointer; min-height: 44px; }
+  .ip-voce summary::-webkit-details-marker { display: none; }
+  .ip-voce h2 { font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.1; }
+  .ip-piu { position: relative; width: 16px; height: 16px; flex: none; }
+  .ip-piu::before, .ip-piu::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1.5px; background: currentColor; transition: transform 0.35s var(--ease-monte); }
+  .ip-piu::after { transform: rotate(90deg); }
+  .ip-voce[open] .ip-piu::after { transform: rotate(0); }
+  .ip-corpo { padding-bottom: 1.5rem; display: grid; gap: 0.5rem; color: var(--color-ardesia); max-width: 44rem; }
+  .ip-verifica { font-size: 0.875rem; }
+</style>

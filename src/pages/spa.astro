@@ -1,0 +1,122 @@
+---
+import Base from '../layouts/Base.astro';
+import Foto from '../components/Foto.astro';
+import V from '../components/V.astro';
+import { spa, resort } from '../data/resort';
+
+const soglie = [
+  { foto: 'spa/soglia-bianca', titolo: 'La soglia', testo: 'Pareti bianche, una porta di legno. Fuori resta la giornata.', alt: 'Ingresso bianco della SPA con una porta in legno e un fascio di rami secchi' },
+  { foto: 'spa/sauna-listelli', titolo: 'Sauna', testo: 'Listelli di legno chiaro e una luce che filtra di lato.', alt: 'Sauna in legno chiaro con la luce che passa tra i listelli' },
+  { foto: 'spa/conca-pietra', titolo: 'Buio', testo: 'Un mosaico scuro, una conca di metallo che brilla.', alt: 'Ambiente scuro a mosaico con una conca di metallo illuminata' },
+  { foto: 'spa/percorso-idromassaggio', titolo: 'Acqua', testo: 'La minipiscina idromassaggio, blu in fondo al corridoio.', alt: 'Corridoio che porta alla minipiscina idromassaggio illuminata di blu' },
+  { foto: 'spa/relax-sdraio', titolo: 'Riposo', testo: 'Sdraio di legno, legno antico alle pareti, una tisana.', alt: 'Area relax con sdraio in legno e pareti in legno antico' },
+];
+---
+<Base
+  title="SPA"
+  description="La SPA di Pietre Gemelle, riservata agli ospiti: sauna, bagno turco, minipiscina idromassaggio, docce emozionali, area relax e tisaneria. Massaggi su prenotazione."
+  image="spa/corridoio-luce"
+>
+  <section class="spa-hero theme-night" data-theme="clear">
+    <div class="spa-hero-img"><Foto src="spa/corridoio-luce" alt="Corridoio bianco della SPA con una lama di luce arancio sul pavimento" priority sizes="100vw" /></div>
+    <div class="wrap spa-hero-testo">
+      <p class="eyebrow" data-hero>SPA · solo per gli ospiti</p>
+      <h1 class="display h1" data-hero>Una sequenza<br />di soglie.</h1>
+      <p class="lead" data-hero>Legno, pietra, acqua e luce. Si entra su prenotazione, dalle 16.</p>
+    </div>
+  </section>
+
+  <section class="soglie theme-night" data-theme="night" data-pin-soglie aria-label="Il percorso">
+    <div class="soglie-stage">
+      {soglie.map((s, i) => (
+        <figure class="soglia" data-soglia style={`z-index:${i + 1}`}>
+          <Foto src={s.foto} alt={s.alt} sizes="100vw" />
+        </figure>
+      ))}
+      <div class="soglie-cap">
+        {soglie.map((s, i) => (
+          <div class="soglia-cap" data-soglia-cap>
+            <span class="soglia-n">{String(i + 1).padStart(2, '0')} / {String(soglie.length).padStart(2, '0')}</span>
+            <h2 class="display h2">{s.titolo}</h2>
+            <p>{s.testo}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="spa-info section theme-light" data-theme="light" aria-labelledby="info-t">
+    <div class="wrap spa-info-grid">
+      <div>
+        <h2 id="info-t" class="display h2" data-split>Come funziona.</h2>
+      </div>
+      <div class="spa-info-dx">
+        <dl class="spa-dl">
+          <div data-reveal><dt>Cosa c’è</dt><dd>{spa.servizi.join(', ')}.</dd></div>
+          <div data-reveal><dt>Quando</dt><dd>Fasce di ingresso {spa.fasce}.</dd></div>
+          <div data-reveal><dt>Quanto</dt><dd><V nota="Il vecchio sito dice 1 ora e 30; Booking dice massimo 3 ore. Da verificare.">{spa.prezzo} per {spa.durata}</V>.</dd></div>
+          <div data-reveal><dt>Massaggi</dt><dd>{spa.massaggi}</dd></div>
+        </dl>
+        <ul class="spa-regole" data-reveal>
+          {spa.regole.map((r) => <li>{r}</li>)}
+        </ul>
+        <p data-reveal class="spa-cta">
+          <a class="btn" href={`tel:${resort.telefono.replace(/\s/g, '')}`}>Prenota l’ingresso · {resort.telefonoVisibile}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="spa-progetto section theme-sand" data-theme="sand" aria-labelledby="prog-t">
+    <div class="wrap spa-prog-grid">
+      <div class="spa-prog-img" data-reveal-img><Foto src="spa/relax-tisaneria" alt="Area relax e tisaneria con una caraffa d’acqua e sdraio sullo sfondo" sizes="(min-width: 900px) 45vw, 100vw" /></div>
+      <div class="spa-prog-testo">
+        <p class="eyebrow">Il progetto</p>
+        <h2 id="prog-t" class="display h2" data-split>Disegnata dagli stessi architetti delle baite.</h2>
+        <p data-reveal>{spa.premio.progetto}.</p>
+        <p data-reveal class="muted"><V nota="Fonte: solo il vecchio sito (2014). Da verificare.">{spa.premio.testo} La giuria ha parlato di {spa.premio.giuria}.</V></p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .spa-hero { position: relative; min-height: 92svh; display: grid; align-items: end; overflow: hidden; }
+  .spa-hero-img { position: absolute; inset: 0; }
+  .spa-hero-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 12 14 / 0.4), rgb(10 12 14 / 0.25) 35%, rgb(10 12 14 / 0.88) 75%); }
+  .spa-hero-img :global(img), .spa-hero-img :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .spa-hero-testo { position: relative; padding-bottom: clamp(5rem, 10vh, 8rem); display: grid; gap: 1.25rem; }
+  .spa-hero-testo .lead { max-width: 28rem; color: rgb(243 241 236 / 0.85); }
+
+  .soglie { height: 100svh; overflow: hidden; }
+  .soglie-stage { position: relative; height: 100%; }
+  .soglia { position: absolute; inset: 0; margin: 0; }
+  :global(html.js:not(.reduce)) .soglia:not(:first-child) { clip-path: inset(0% 50% 0% 50%); }
+  .soglia :global(img), .soglia :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .soglia::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(10 12 14 / 0.7), transparent 60%); }
+  .soglie-cap { position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; padding: 0 max(1rem, calc((100% - 84rem) / 2)) clamp(3rem, 8vh, 6rem); display: grid; }
+  .soglia-cap { grid-area: 1 / 1; display: grid; gap: 0.75rem; max-width: 30rem; }
+  :global(html.js:not(.reduce)) .soglia-cap:not(:first-child) { opacity: 0; }
+  .soglia-n { font-size: 0.8125rem; font-variant-numeric: tabular-nums; color: var(--color-larice-chiaro); }
+  .soglia-cap p { color: rgb(243 241 236 / 0.85); font-size: 1.0625rem; }
+  :global(html.reduce) .soglie { height: auto; }
+  :global(html.reduce) .soglie-stage { display: grid; gap: 1px; }
+  :global(html.reduce) .soglia { position: relative; height: 70svh; }
+  :global(html.reduce) .soglie-cap { position: static; padding: 3rem 1rem; gap: 2rem; }
+  :global(html.reduce) .soglia-cap { grid-area: auto; }
+
+  .spa-info-grid { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .spa-info-grid { grid-template-columns: 1fr 1.4fr; } }
+  .spa-dl { display: grid; gap: 0; }
+  .spa-dl div { display: grid; gap: 0.35rem; padding: 1.25rem 0; border-top: 1px solid var(--color-pietra); }
+  @media (min-width: 640px) { .spa-dl div { grid-template-columns: 9rem 1fr; gap: 1.5rem; } }
+  .spa-dl dt { font-weight: 560; color: var(--color-larice); font-size: 0.9375rem; }
+  .spa-regole { margin-top: 2rem; padding-left: 1.1rem; display: grid; gap: 0.4rem; color: var(--color-ardesia); font-size: 0.9375rem; list-style: disc; }
+  .spa-cta { margin-top: 2rem; }
+
+  .spa-prog-grid { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .spa-prog-grid { grid-template-columns: 1fr 1fr; align-items: center; gap: 5rem; } }
+  .spa-prog-img { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 0.35rem; }
+  .spa-prog-img :global(img), .spa-prog-img :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .spa-prog-testo { display: grid; gap: 1.25rem; }
+</style>

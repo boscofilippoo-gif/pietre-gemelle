@@ -1,0 +1,6 @@
+---
+// Avvolge un dato non ancora confermato dalla struttura.
+interface Props { nota?: string }
+const { nota = 'Dato da verificare con la struttura' } = Astro.props;
+---
+<span class="v" title={nota} data-verifica={nota}><slot /></span>

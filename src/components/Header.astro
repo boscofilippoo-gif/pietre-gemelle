@@ -1,0 +1,89 @@
+---
+import Logo from './Logo.astro';
+import { nav, resort } from '../data/resort';
+const path = Astro.url.pathname;
+---
+<header class="site-header" data-header data-header-theme="light">
+  <div class="header-inner wrap">
+    <a href="/" class="header-logo"><Logo /></a>
+    <nav class="header-nav" aria-label="Principale">
+      <ul>
+        {nav.map((n) => (
+          <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href={`tel:${resort.telefono.replace(/\s/g, '')}`} class="header-tel">{resort.telefonoVisibile}</a>
+      <button type="button" class="btn header-cta" data-apri-prenota>Verifica disponibilità</button>
+      <button type="button" class="header-menu" aria-expanded="false" aria-controls="menu-mobile" data-menu-toggle>
+        <span class="sr-only">Menu</span>
+        <span class="burger" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+  <div id="menu-mobile" class="menu-mobile" data-menu hidden>
+    <nav aria-label="Menu">
+      <ul>
+        <li><a href="/">Home</a></li>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        <li><a href="/offerte/">Offerte</a></li>
+      </ul>
+    </nav>
+    <p class="menu-foot">
+      <a href={`tel:${resort.telefono.replace(/\s/g, '')}`}>{resort.telefonoVisibile}</a><br />
+      <a href={`mailto:${resort.email}`}>{resort.email}</a>
+    </p>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    --hbg: var(--color-neve); --hfg: var(--color-granito);
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    color: var(--hfg);
+    transition: transform 0.5s var(--ease-monte), background-color 0.45s var(--ease-monte), color 0.45s var(--ease-monte), padding 0.45s var(--ease-monte);
+    background-color: color-mix(in oklab, var(--hbg) 0%, transparent);
+  }
+  .site-header[data-header-theme='light'] { --hbg: var(--color-neve); --hfg: var(--color-granito); }
+  .site-header[data-header-theme='sand'] { --hbg: var(--color-calce); --hfg: var(--color-granito); }
+  .site-header[data-header-theme='dark'] { --hbg: var(--color-granito); --hfg: var(--color-neve); }
+  .site-header[data-header-theme='night'] { --hbg: var(--color-notte); --hfg: var(--color-neve); }
+  .site-header[data-header-theme='clear'] { --hbg: var(--color-notte); --hfg: var(--color-neve); }
+  /* Sopra l'immagine d'apertura: trasparente, con una leggera ombra per la leggibilità */
+  .site-header[data-header-theme='clear']:not(.is-compact) { background: linear-gradient(to bottom, rgb(10 12 14 / 0.45), transparent); }
+  .site-header.is-compact { background-color: var(--hbg); }
+  .site-header.is-hidden { transform: translateY(-100%); }
+  .site-header.menu-open { transform: none; background-color: var(--color-granito); color: var(--color-neve); }
+
+  .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; height: 5.25rem; transition: height 0.45s var(--ease-monte); }
+  .is-compact .header-inner { height: 4rem; }
+  .header-logo { font-size: 0.95rem; }
+  .header-nav ul { display: flex; gap: 1.75rem; list-style: none; margin: 0; padding: 0; font-size: 0.9375rem; font-weight: 500; }
+  .header-nav a { position: relative; padding-block: 0.5rem; }
+  .header-nav a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0.15rem; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 0.4s var(--ease-monte); }
+  .header-nav a:hover::after, .header-nav a[aria-current='page']::after { transform: scaleX(1); transform-origin: left; }
+  .header-actions { display: flex; align-items: center; gap: 1.25rem; }
+  .header-tel { font-size: 0.875rem; font-variant-numeric: tabular-nums; opacity: 0.85; }
+  .header-cta { padding: 0.7rem 1.1rem; font-size: 0.875rem; }
+  .header-menu { display: none; width: 44px; height: 44px; place-items: center; }
+  .burger { display: grid; gap: 6px; width: 24px; }
+  .burger span { height: 1.5px; background: currentColor; transition: transform 0.35s var(--ease-monte); }
+  .menu-open .burger span:first-child { transform: translateY(3.75px) rotate(45deg); }
+  .menu-open .burger span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+
+  .menu-mobile { position: fixed; inset: 4rem 0 0 0; background: var(--color-granito); color: var(--color-neve); padding: 2rem 1rem 6rem; overflow-y: auto; }
+  .menu-mobile ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.35rem; }
+  .menu-mobile nav a { font-family: var(--font-serif); font-size: 2.6rem; line-height: 1.15; }
+  .menu-foot { margin-top: 2.5rem; font-size: 1rem; line-height: 1.9; opacity: 0.8; }
+
+  @media (max-width: 1080px) {
+    .header-nav, .header-tel { display: none; }
+  }
+  @media (max-width: 767px) {
+    .header-cta { display: none; }
+    .header-menu { display: grid; }
+    .header-inner { height: 4rem; }
+    .header-logo { font-size: 0.85rem; }
+  }
+</style>

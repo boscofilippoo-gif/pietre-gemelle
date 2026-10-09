@@ -1,0 +1,23 @@
+---
+import Pietre from './Pietre.astro';
+import Logo from './Logo.astro';
+---
+<!-- Apertura breve: solo al primo arrivo o alla ricarica (deciso dallo script in <head>). -->
+<div class="intro" data-intro aria-hidden="true">
+  <div class="intro-stage">
+    <Pietre class="intro-pietre" />
+    <div class="intro-logo"><Logo /></div>
+  </div>
+</div>
+
+<style>
+  .intro { display: none; }
+  :global(html.show-intro) .intro {
+    display: grid; place-items: center;
+    position: fixed; inset: 0; z-index: 100;
+    background: var(--color-notte); color: var(--color-neve);
+  }
+  .intro-stage { position: relative; width: min(52vw, 20rem); display: grid; place-items: center; }
+  .intro-stage :global(.intro-pietre) { width: 100%; height: auto; color: var(--color-ardesia); overflow: visible; }
+  .intro-logo { position: absolute; left: 50%; top: calc(100% + 1.75rem); transform: translateX(-50%); font-size: clamp(0.9rem, 2.4vw, 1.25rem); opacity: 0; white-space: nowrap; }
+</style>

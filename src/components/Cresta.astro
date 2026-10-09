@@ -1,0 +1,123 @@
+---
+import { cresta, W, H } from '../lib/cresta';
+import { appartamenti, tipi } from '../data/resort';
+
+interface Props {
+  modo?: 'linea' | 'indice' | 'mini';
+  attivo?: string; // slug evidenziato (modo mini)
+  class?: string;
+}
+const { modo = 'indice', attivo, class: className } = Astro.props;
+const { picchi, linea, area } = cresta();
+const bySlug = Object.fromEntries(appartamenti.map((a) => [a.slug, a]));
+---
+{modo === 'linea' && (
+  <svg class:list={['cresta-linea', className]} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
+    <path d={linea} fill="none" stroke="currentColor" stroke-width="1.25" vector-effect="non-scaling-stroke" data-draw />
+  </svg>
+)}
+
+{modo !== 'linea' && (
+  <div class:list={['cresta', `cresta-${modo}`, className]} data-cresta={modo}>
+    <div class="cresta-scroll">
+      <div class="cresta-canvas">
+        <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
+          <path d={area} class="cresta-area" />
+          <path d={linea} class="cresta-path" fill="none" stroke="currentColor" stroke-width="1.25" vector-effect="non-scaling-stroke" data-draw />
+          {picchi.map((p) => (
+            <line x1={p.x} x2={p.x} y1={p.y + 10} y2={H} class="cresta-filo" vector-effect="non-scaling-stroke" />
+          ))}
+        </svg>
+        <ol class="cresta-vette">
+          {picchi.map((p, i) => {
+            const a = bySlug[p.slug];
+            const on = attivo === p.slug;
+            const sotto = p.xp > 82 ? 'sx' : p.xp < 18 ? 'dx' : 'c';
+            return (
+              <li
+                class:list={['vetta', { 'is-on': on }]}
+                style={`--x:${p.xp}%;--y:${p.yp}%`}
+                data-vetta={p.slug}
+                data-ospiti={a.ospitiMax}
+              >
+                <a href={`/appartamenti/${p.slug}/`} class="vetta-punto" aria-label={`${a.nome}, ${a.quota} metri: ${tipi[a.tipo].nome}, ${a.ospiti} ospiti`}>
+                  <span class="vetta-dot" />
+                </a>
+                <span class="vetta-label" aria-hidden="true">
+                  <span class="vetta-nome">{a.nome}</span>
+                  <span class="vetta-quota">{a.quota.toLocaleString('it-IT')} m</span>
+                </span>
+                {modo === 'indice' && (
+                  <span class:list={['vetta-card', `vetta-card-${sotto}`]} aria-hidden="true">
+                    <span class="vetta-card-tipo">{tipi[a.tipo].nome} · {a.ospiti} ospiti</span>
+                    <span class="vetta-card-frase">{a.frase}</span>
+                    {a.baita && <span class="vetta-card-baita">Baita {a.baita}</span>}
+                  </span>
+                )}
+                <span class="sr-only">{i + 1}</span>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </div>
+    {modo === 'indice' && <p class="cresta-nota">Profilo schematico: le vette in ordine lungo la cresta, alle quote reali.</p>}
+  </div>
+)}
+
+<style>
+  .cresta-linea { display: block; width: 100%; height: 100%; }
+
+  .cresta { position: relative; }
+  .cresta-scroll { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 5.5rem 0 2.5rem; }
+  .cresta-mini .cresta-scroll { overflow: visible; padding: 3rem 0 0; }
+  .cresta-scroll::-webkit-scrollbar { display: none; }
+  .cresta-canvas { position: relative; min-width: 1040px; aspect-ratio: 1600 / 360; padding-top: 0; }
+  .cresta-mini .cresta-canvas { min-width: 0; aspect-ratio: 1600 / 220; }
+  .cresta-canvas svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .cresta-area { fill: color-mix(in oklab, currentColor 5%, transparent); }
+  .cresta-filo { stroke: currentColor; stroke-opacity: 0.12; stroke-dasharray: 2 5; }
+
+  .cresta-vette { list-style: none; margin: 0; padding: 0; }
+  .vetta { position: absolute; left: var(--x); top: var(--y); width: 0; height: 0; }
+  .vetta-punto { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; z-index: 2; }
+  .vetta-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-neve); box-shadow: 0 0 0 1.5px currentColor; transition: transform 0.35s var(--ease-monte), background 0.35s; }
+  .vetta-label {
+    position: absolute; left: 0; bottom: 16px; transform: translateX(-50%) rotate(0deg);
+    display: grid; justify-items: center; gap: 0.1rem; white-space: nowrap; pointer-events: none;
+    font-size: 0.75rem; line-height: 1.1;
+  }
+  .vetta-nome { font-family: var(--font-serif); font-size: 1.05rem; }
+  .vetta-quota { font-variant-numeric: tabular-nums; opacity: 0.6; font-size: 0.6875rem; }
+  /* etichette su due altezze alternate, sempre sopra la cresta, con un filo verso la vetta */
+  .cresta-indice .vetta:nth-child(even) .vetta-label { bottom: 58px; }
+  .cresta-indice .vetta:nth-child(even)::before { content: ''; position: absolute; left: 0; bottom: 10px; height: 46px; width: 1px; background: currentColor; opacity: 0.25; }
+
+  .vetta:hover .vetta-dot, .vetta:focus-within .vetta-dot, .vetta.is-on .vetta-dot { transform: scale(1.7); background: var(--color-larice); box-shadow: 0 0 0 1.5px var(--color-larice); }
+  .vetta.is-dim { opacity: 0.22; }
+  .vetta { transition: opacity 0.4s var(--ease-monte); }
+
+  .vetta-card {
+    position: absolute; top: 34px; left: 0; transform: translate(-50%, 8px);
+    width: 15rem; padding: 0.9rem 1rem; border-radius: 0.6rem;
+    background: var(--color-granito); color: var(--color-neve);
+    display: grid; gap: 0.35rem; font-size: 0.85rem; line-height: 1.35;
+    opacity: 0; pointer-events: none; z-index: 5;
+    transition: opacity 0.3s var(--ease-monte), transform 0.3s var(--ease-monte);
+  }
+  .vetta-card-sx { transform: translate(-90%, 8px); }
+  .vetta-card-dx { transform: translate(-10%, 8px); }
+  .vetta-card-tipo { color: var(--color-larice-chiaro); font-weight: 560; font-size: 0.75rem; }
+  .vetta-card-frase { font-family: var(--font-serif); font-size: 1.15rem; line-height: 1.15; }
+  .vetta-card-baita { opacity: 0.65; font-size: 0.75rem; }
+  .vetta:hover .vetta-card, .vetta:focus-within .vetta-card { opacity: 1; transform: translate(-50%, 0); }
+  .vetta:hover .vetta-card-sx, .vetta:focus-within .vetta-card-sx { transform: translate(-90%, 0); }
+  .vetta:hover .vetta-card-dx, .vetta:focus-within .vetta-card-dx { transform: translate(-10%, 0); }
+  @media (hover: none) { .vetta-card { display: none; } }
+
+  .cresta-mini .vetta-label { display: none; }
+  .cresta-mini .vetta.is-on .vetta-label { display: grid; }
+  .cresta-mini .vetta-dot { width: 7px; height: 7px; }
+
+  .cresta-nota { margin-top: 1rem; font-size: 0.8125rem; opacity: 0.6; }
+</style>

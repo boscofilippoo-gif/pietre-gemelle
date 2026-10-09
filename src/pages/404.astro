@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Pietre from '../components/Pietre.astro';
+---
+<Base title="Pagina non trovata" description="La pagina che cercate non esiste più.">
+  <section class="nf theme-light" data-theme="light">
+    <div class="wrap nf-in">
+      <Pietre class="nf-pietre" />
+      <h1 class="display h2">Questa pagina si è spaccata in due.</h1>
+      <p class="lead muted">Il sito è cambiato. Ripartite da qui:</p>
+      <p class="nf-link"><a class="btn" href="/">Home</a> <a class="btn btn-ghost" href="/appartamenti/">Appartamenti</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-height: 90svh; display: grid; align-items: center; padding-top: 6rem; }
+  .nf-in { display: grid; gap: 1.25rem; justify-items: center; text-align: center; }
+  .nf-in :global(.nf-pietre) { width: min(60vw, 14rem); height: auto; color: var(--color-pietra); overflow: visible; }
+  .nf-in :global(.pietra-sx) { transform: translateX(-10px) rotate(-4deg); transform-origin: 20% 100%; }
+  .nf-in :global(.pietra-dx) { transform: translateX(10px) rotate(4deg); transform-origin: 80% 100%; }
+  .nf-link { display: flex; gap: 0.75rem; }
+</style>

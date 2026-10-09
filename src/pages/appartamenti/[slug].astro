@@ -1,0 +1,171 @@
+---
+import Base from '../../layouts/Base.astro';
+import Foto from '../../components/Foto.astro';
+import Cresta from '../../components/Cresta.astro';
+import V from '../../components/V.astro';
+import { appartamenti, tipi, type Appartamento } from '../../data/resort';
+
+export function getStaticPaths() {
+  return appartamenti.map((a, i) => ({
+    params: { slug: a.slug },
+    props: { a, prev: appartamenti[(i - 1 + appartamenti.length) % appartamenti.length], next: appartamenti[(i + 1) % appartamenti.length] },
+  }));
+}
+interface Props { a: Appartamento; prev: Appartamento; next: Appartamento }
+const { a, prev, next } = Astro.props;
+const t = tipi[a.tipo];
+const fotoKeys = a.foto.map((f) => `appartamenti/${f}`);
+const og = fotoKeys[0] ?? 'esterni/estate-baite-monte-rosa';
+const capienzaDubbia = a.note?.includes('capienza');
+---
+<Base
+  title={`Appartamento ${a.nome}`}
+  description={`${t.nome} per ${a.ospiti} persone${a.baita ? ` nella baita ${a.baita}` : ''}. ${a.frase} Pietre Gemelle Resort, Alagna Valsesia.`}
+  image={og}
+  schema={[{
+    '@context': 'https://schema.org', '@type': 'Apartment',
+    name: `Appartamento ${a.nome}`,
+    description: a.frase,
+    occupancy: { '@type': 'QuantitativeValue', maxValue: a.ospitiMax },
+    containedInPlace: { '@id': 'https://www.pietregemelle.it/#resort' },
+  }]}
+>
+  <article>
+    <header class="ap-head theme-light" data-theme="light">
+      <div class="wrap ap-head-grid">
+        <div>
+          <p class="eyebrow" data-hero><a href="/appartamenti/" class="link">Appartamenti</a> · {t.nome}</p>
+          <h1 class="display h1 ap-nome" data-hero>{a.nome}</h1>
+          <p class="ap-quota" data-hero><span class="display">{a.quota.toLocaleString('it-IT')}</span> metri · {a.vetta}</p>
+        </div>
+        <div class="ap-head-dx" data-hero>
+          <p class="lead">{a.frase}</p>
+          <dl class="ap-dati">
+            <div><dt>Persone</dt><dd>{capienzaDubbia ? <V nota={a.note}>{a.ospiti}</V> : a.ospiti}</dd></div>
+            <div><dt>Tipo</dt><dd>{t.nome}</dd></div>
+            <div><dt>Piano</dt><dd>{a.piano}</dd></div>
+            {a.baita && <div><dt>Baita</dt><dd>{a.baita}</dd></div>}
+          </dl>
+          <button type="button" class="btn" data-apri-prenota>Verifica disponibilità <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+      <div class="wrap ap-cresta" data-hero><Cresta modo="mini" attivo={a.slug} /></div>
+    </header>
+
+    {fotoKeys.length > 0 ? (
+      <section class="ap-galleria theme-light" data-theme="light" aria-label="Foto">
+        <div class="wrap ap-gal-grid" data-n={fotoKeys.length}>
+          {fotoKeys.map((k, i) => (
+            <div class:list={['ap-gal', `ap-gal-${i}`]} data-reveal-img>
+              <Foto src={k} alt={`${a.nome}: ${a.stanze[Math.min(i, a.stanze.length - 1)].nome.toLowerCase()}`} priority={i === 0} sizes={i === 0 ? '(min-width: 900px) 62vw, 100vw' : '(min-width: 900px) 34vw, 100vw'} />
+            </div>
+          ))}
+        </div>
+        <p class="wrap ap-gal-nota muted">Foto attuali della struttura, in attesa di un nuovo servizio fotografico.</p>
+      </section>
+    ) : (
+      <section class="ap-galleria theme-light" data-theme="light">
+        <p class="wrap ap-nofoto"><V nota={a.note}>Le foto di questo appartamento arriveranno con il nuovo servizio fotografico.</V></p>
+      </section>
+    )}
+
+    <section class="ap-stanze section theme-light" data-theme="light" aria-labelledby="stanze-t">
+      <div class="wrap ap-stanze-grid">
+        <h2 id="stanze-t" class="display h2" data-split>Com’è dentro.</h2>
+        <ol class="stanze">
+          {a.stanze.map((s, i) => (
+            <li data-reveal={i * 0.05}>
+              <h3 class="stanza-nome">{s.nome}</h3>
+              <p>{s.testo}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <ul class="wrap ap-dettagli" aria-label="Dettagli">
+        {a.dettagli.map((d) => <li>{d}</li>)}
+        <li>Riscaldamento autonomo</li>
+        <li>Lenzuola e asciugamani</li>
+      </ul>
+    </section>
+
+    {a.piantina && (
+      <section class="ap-piantina theme-dark" data-theme="dark" aria-labelledby="piantina-t">
+        <div class="wrap ap-piantina-grid">
+          <div>
+            <h2 id="piantina-t" class="display h2" data-split>La piantina.</h2>
+            <p class="muted ap-piantina-nota">Disegno originale del progetto. {a.note?.includes('piantina') && <V nota={a.note}>Da verificare.</V>}</p>
+          </div>
+          <div class="ap-piantina-img" data-reveal>
+            <Foto src={`piantine/${a.piantina}`} alt={`Piantina dell’appartamento ${a.nome}`} sizes="(min-width: 900px) 40vw, 90vw" />
+          </div>
+        </div>
+      </section>
+    )}
+
+    <nav class="ap-nav theme-light" data-theme="light" aria-label="Altri appartamenti">
+      <div class="wrap ap-nav-grid">
+        <a href={`/appartamenti/${prev.slug}/`} class="ap-nav-link">
+          <span class="muted">← Vetta precedente</span>
+          <span class="display h3">{prev.nome}</span>
+          <span class="muted">{prev.quota.toLocaleString('it-IT')} m · {tipi[prev.tipo].nome}</span>
+        </a>
+        <a href={`/appartamenti/${next.slug}/`} class="ap-nav-link ap-nav-next">
+          <span class="muted">Vetta successiva →</span>
+          <span class="display h3">{next.nome}</span>
+          <span class="muted">{next.quota.toLocaleString('it-IT')} m · {tipi[next.tipo].nome}</span>
+        </a>
+      </div>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .ap-head { padding-top: clamp(8rem, 14vw, 11rem); }
+  .ap-head-grid { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .ap-head-grid { grid-template-columns: 1.3fr 1fr; align-items: end; } }
+  .ap-nome { margin-top: 1rem; overflow-wrap: anywhere; }
+  .ap-quota { margin-top: 1.25rem; color: var(--color-ardesia); max-width: 34rem; }
+  .ap-quota .display { font-size: 1.6rem; color: var(--color-granito); }
+  .ap-head-dx { display: grid; gap: 1.5rem; justify-items: start; }
+  .ap-dati { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 2rem; width: 100%; border-top: 1px solid var(--color-pietra); padding-top: 1.25rem; }
+  .ap-dati dt { font-size: 0.75rem; font-weight: 560; color: var(--color-larice); }
+  .ap-dati dd { font-size: 1rem; }
+  .ap-cresta { margin-top: 3rem; color: var(--color-ardesia); }
+
+  .ap-galleria { padding-top: clamp(2.5rem, 5vw, 4rem); }
+  .ap-gal-grid { display: grid; gap: 1rem; }
+  @media (min-width: 900px) {
+    .ap-gal-grid { grid-template-columns: 1.8fr 1fr; grid-template-rows: auto auto; }
+    .ap-gal-0 { grid-row: span 2; }
+    .ap-gal-grid[data-n='2'] { grid-template-rows: auto; }
+    .ap-gal-grid[data-n='2'] .ap-gal-0 { grid-row: auto; }
+  }
+  .ap-gal { overflow: hidden; border-radius: 0.35rem; aspect-ratio: 4 / 3; }
+  @media (min-width: 900px) { .ap-gal-0 { aspect-ratio: auto; min-height: 100%; } }
+  .ap-gal :global(img), .ap-gal :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ap-gal-nota { margin-top: 0.75rem; font-size: 0.8125rem; }
+  .ap-nofoto { padding: 3rem 0; font-size: 1.1rem; }
+
+  .ap-stanze-grid { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .ap-stanze-grid { grid-template-columns: 1fr 1.5fr; } }
+  .stanze { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+  .stanze li { display: grid; gap: 0.35rem; padding: 1.25rem 0; border-top: 1px solid var(--color-pietra); }
+  @media (min-width: 640px) { .stanze li { grid-template-columns: 11rem 1fr; gap: 1.5rem; } }
+  .stanza-nome { font-family: var(--font-serif); font-size: 1.5rem; line-height: 1.1; }
+  .stanze p { color: var(--color-ardesia); }
+  .ap-dettagli { list-style: none; padding: 0; margin-top: 2.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .ap-dettagli li { padding: 0.45rem 0.9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--color-pietra); font-size: 0.875rem; }
+
+  .ap-piantina { padding-block: clamp(4rem, 8vw, 7rem); }
+  .ap-piantina-grid { display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .ap-piantina-grid { grid-template-columns: 1fr 1fr; align-items: center; } }
+  .ap-piantina-nota { margin-top: 1rem; }
+  .ap-piantina-img { display: grid; place-items: center; }
+  .ap-piantina-img :global(img) { max-height: 70svh; width: auto; display: block; }
+
+  .ap-nav { padding-block: clamp(3rem, 6vw, 5rem); }
+  .ap-nav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; border-top: 1px solid var(--color-pietra); padding-top: 2rem; }
+  .ap-nav-link { display: grid; gap: 0.35rem; font-size: 0.875rem; }
+  .ap-nav-next { text-align: right; justify-items: end; }
+  .ap-nav-link:hover .display { color: var(--color-larice); }
+</style>

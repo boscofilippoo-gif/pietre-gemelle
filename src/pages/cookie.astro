@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaSemplice from '../components/PaginaSemplice.astro';
+---
+<Base title="Cookie" description="Informativa sui cookie del sito di Pietre Gemelle Resort.">
+  <PaginaSemplice eyebrow="Cookie" titolo="Cookie" />
+  <section class="legale theme-light" data-theme="light">
+    <div class="wrap legale-testo">
+      <p class="legale-avviso"><strong>Testo provvisorio.</strong> Oggi questo sito non usa cookie di profilazione né statistiche. Se verrà attivato Google Analytics, servirà un banner di consenso con “Rifiuta” alla pari di “Accetta” e questa pagina andrà aggiornata.</p>
+      <h2 class="display h3">Cosa usa il sito</h2>
+      <p>Solo una memoria temporanea del browser (sessionStorage) per non ripetere l’animazione d’apertura durante la stessa visita. Non è un cookie e non contiene dati personali.</p>
+      <h2 class="display h3">Servizi esterni</h2>
+      <p>La mappa nella pagina Contatti è di OpenStreetMap. Il sistema di prenotazione, che si apre su un altro sito, ha una propria informativa sui cookie.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legale { padding-bottom: clamp(5rem, 10vw, 8rem); }
+  .legale-testo { max-width: 44rem; display: grid; gap: 1rem; }
+  .legale-testo h2 { margin-top: 1.5rem; }
+  .legale-avviso { padding: 1rem 1.25rem; border-radius: 0.5rem; background: var(--color-calce); font-size: 0.9375rem; }
+</style>

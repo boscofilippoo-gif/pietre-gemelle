@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaSemplice from '../components/PaginaSemplice.astro';
+import { resort } from '../data/resort';
+---
+<Base title="Privacy" description="Informativa sul trattamento dei dati personali di Pietre Gemelle Resort.">
+  <PaginaSemplice eyebrow="Privacy" titolo="Informativa privacy" />
+  <section class="legale theme-light" data-theme="light">
+    <div class="wrap legale-testo">
+      <p class="legale-avviso"><strong>Testo provvisorio.</strong> L’informativa definitiva va redatta o aggiornata dal consulente della struttura secondo il Regolamento UE 2016/679 (GDPR). Il vecchio sito cita ancora il D.lgs. 196/2003.</p>
+      <h2 class="display h3">Titolare del trattamento</h2>
+      <p>{resort.legale.ragioneSociale}, {resort.legale.sede}. P.IVA {resort.legale.piva}. Email: {resort.email}.</p>
+      <h2 class="display h3">Quali dati e perché</h2>
+      <p>I dati inviati con il modulo di contatto (nome, email, telefono, messaggio) servono solo a rispondere alla richiesta. Le prenotazioni online avvengono sul sistema del fornitore del booking engine, che ha una propria informativa.</p>
+      <h2 class="display h3">Diritti</h2>
+      <p>Potete chiedere in ogni momento accesso, rettifica o cancellazione dei vostri dati scrivendo a {resort.email}.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legale { padding-bottom: clamp(5rem, 10vw, 8rem); }
+  .legale-testo { max-width: 44rem; display: grid; gap: 1rem; }
+  .legale-testo h2 { margin-top: 1.5rem; }
+  .legale-avviso { padding: 1rem 1.25rem; border-radius: 0.5rem; background: var(--color-calce); font-size: 0.9375rem; }
+</style>

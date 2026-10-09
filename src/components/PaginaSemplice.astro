@@ -1,0 +1,17 @@
+---
+// Testata comune per le pagine di servizio (info, contatti, offerte, legali).
+interface Props { eyebrow: string; titolo: string; lead?: string }
+const { eyebrow, titolo, lead } = Astro.props;
+---
+<section class="ps-head theme-light" data-theme="light">
+  <div class="wrap">
+    <p class="eyebrow" data-hero>{eyebrow}</p>
+    <h1 class="display h1" data-hero set:html={titolo} />
+    {lead && <p class="lead muted ps-lead" data-hero>{lead}</p>}
+  </div>
+</section>
+
+<style>
+  .ps-head { padding-block: clamp(8rem, 16vw, 12rem) clamp(2.5rem, 5vw, 4rem); }
+  .ps-lead { max-width: 38rem; margin-top: 1.5rem; }
+</style>

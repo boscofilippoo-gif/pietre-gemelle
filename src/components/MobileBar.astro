@@ -1,0 +1,26 @@
+---
+import { resort } from '../data/resort';
+---
+<div class="mobile-bar" data-mobile-bar>
+  <a href={`tel:${resort.telefono.replace(/\s/g, '')}`} class="mb-btn mb-tel">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M5 3h3l2 5-2.5 1.5a11 11 0 0 0 7 7L16 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2Z"/></svg>
+    Chiama
+  </a>
+  <button type="button" class="mb-btn mb-book" data-apri-prenota>Verifica date</button>
+</div>
+
+<style>
+  .mobile-bar {
+    position: fixed; z-index: 45; left: 0.75rem; right: 0.75rem; bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    display: none; grid-template-columns: 1fr 1.6fr; gap: 0.5rem;
+    padding: 0.4rem; border-radius: 999px;
+    background: color-mix(in oklab, var(--color-granito) 92%, transparent);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 30px rgb(0 0 0 / 0.25);
+    transition: transform 0.5s var(--ease-monte);
+  }
+  .mobile-bar.is-away { transform: translateY(160%); }
+  .mb-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 48px; border-radius: 999px; font-weight: 560; font-size: 0.95rem; color: var(--color-neve); }
+  .mb-book { background: var(--color-larice); }
+  @media (max-width: 767px) { .mobile-bar { display: grid; } }
+</style>

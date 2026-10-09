@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import Foto from '../../components/Foto.astro';
+import V from '../../components/V.astro';
+import { stagioni, amici, crediti } from '../../data/resort';
+const cred = (f: string) => crediti.find((c) => c.file === f);
+---
+<Base
+  title="La valle"
+  description="Cosa fare in Alta Valsesia stagione per stagione: sci e freeride sul Monterosa Ski, rafting sul Sesia, escursioni walser, alpinismo fino alla Capanna Margherita, funghi e colori d’autunno."
+  image="territorio/alagna-monte-rosa-sera"
+>
+  <section class="valle-head theme-light" data-theme="light">
+    <div class="wrap">
+      <p class="eyebrow" data-hero>La valle</p>
+      <h1 class="display h1" data-hero>Fuori dalla porta,<br />l’Alta Valsesia.</h1>
+      <p class="lead muted valle-lead" data-hero>Alagna è a due chilometri e mezzo. Sopra ci sono il Monte Rosa, i ghiacciai e i sentieri dei walser; sotto scorre il Sesia.</p>
+    </div>
+  </section>
+
+  {stagioni.map((s, i) => (
+    <section class:list={['stag section', i % 2 ? 'theme-sand' : 'theme-light']} data-theme={i % 2 ? 'sand' : 'light'} aria-labelledby={`st-${s.slug}`}>
+      <div class:list={['wrap stag-grid', { 'stag-rev': i % 2 }]}>
+        <a href={`/la-valle/${s.slug}/`} class="stag-img" data-reveal-img aria-hidden="true" tabindex="-1">
+          <Foto src={s.foto} alt="" sizes="(min-width: 900px) 55vw, 100vw" />
+        </a>
+        <div class="stag-testo">
+          <h2 id={`st-${s.slug}`} class="display h2" data-split>{s.nome}</h2>
+          <p class="lead" data-reveal>{s.frase}</p>
+          <p class="stag-att muted" data-reveal>{s.attivita.map((a) => a.nome).join(' · ')}</p>
+          <a href={`/la-valle/${s.slug}/`} class="link-arrow" data-reveal>Cosa fare in {s.nome.toLowerCase()} <span aria-hidden="true">→</span></a>
+          {cred(s.foto) && <p class="credit">Foto: <a href={cred(s.foto)!.url}>{cred(s.foto)!.autore}</a>, {cred(s.foto)!.licenza}</p>}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section id="amici-della-valle" class="amici section theme-dark" data-theme="dark" aria-labelledby="amici-t">
+    <div class="wrap">
+      <h2 id="amici-t" class="display h2" data-split>Gli amici della valle.</h2>
+      <p class="lead amici-lead" data-reveal>Guide, maestri, istruttori, posti dove mangiare: le persone con cui lavoriamo da anni. <V nota="Elenco dal vecchio sito (2024): da riconfermare.">Chiedete a noi, vi mettiamo in contatto.</V></p>
+      <ul class="amici-lista">
+        {Object.values(amici).map((a) => (
+          <li data-reveal>
+            {a.url ? <a href={a.url} rel="noopener" class="link">{a.nome}</a> : <span>{a.nome}</span>}
+            <span class="muted">{a.cosa}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .valle-head { padding-block: clamp(8rem, 16vw, 12rem) clamp(2rem, 4vw, 3rem); }
+  .valle-lead { max-width: 38rem; margin-top: 1.75rem; }
+  .stag-grid { display: grid; gap: 2rem; align-items: center; }
+  @media (min-width: 900px) { .stag-grid { grid-template-columns: 1.3fr 1fr; gap: 5rem; } .stag-rev .stag-img { order: 2; } }
+  .stag-img { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 0.35rem; display: block; }
+  .stag-img :global(img), .stag-img :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease-monte); }
+  .stag-img:hover :global(img) { transform: scale(1.03); }
+  .stag-testo { display: grid; gap: 1.25rem; }
+  .stag-att { font-size: 0.9375rem; }
+  .amici-lead { max-width: 40rem; margin-top: 1.5rem; color: rgb(243 241 236 / 0.85); }
+  .amici-lista { list-style: none; padding: 0; margin-top: 3rem; display: grid; gap: 0; }
+  @media (min-width: 768px) { .amici-lista { grid-template-columns: 1fr 1fr; column-gap: 3rem; } }
+  @media (min-width: 1100px) { .amici-lista { grid-template-columns: repeat(3, 1fr); } }
+  .amici-lista li { display: grid; gap: 0.15rem; padding: 1rem 0; border-top: 1px solid rgb(255 255 255 / 0.14); }
+  .amici-lista li > :first-child { font-family: var(--font-serif); font-size: 1.4rem; width: fit-content; }
+  .amici-lista .muted { font-size: 0.875rem; }
+</style>

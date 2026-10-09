@@ -1,0 +1,2 @@
+Foto generate da scripts/foto.mjs: non modificare a mano.
+Originali in _materiali/foto-originali-sito e _materiali/wikimedia.

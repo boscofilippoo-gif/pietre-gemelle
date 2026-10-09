@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaSemplice from '../components/PaginaSemplice.astro';
+import V from '../components/V.astro';
+import { offerte, resort } from '../data/resort';
+---
+<Base title="Offerte" description="Le offerte di Pietre Gemelle Resort: skipass scontato con Happy Ski Monterosa, sconti per compleanni e anniversari.">
+  <PaginaSemplice eyebrow="Offerte" titolo="Qualche buona ragione<br />per partire." lead="Le offerte valgono prenotando direttamente con noi, al telefono o dal sito." />
+  <section class="off theme-light" data-theme="light">
+    <ol class="wrap off-lista">
+      {offerte.map((o) => (
+        <li data-reveal>
+          <p class="off-sconto display">{o.sconto}</p>
+          <div>
+            <h2 class="display h3">{o.titolo}</h2>
+            <p class="off-testo">{o.testo}</p>
+            <p class="off-nota"><V nota="Da riconfermare per la stagione 2026/27">{o.nota}</V></p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <div class="wrap off-cta">
+      <button type="button" class="btn" data-apri-prenota>Verifica disponibilità <span aria-hidden="true">→</span></button>
+      <a class="btn btn-ghost" href={`tel:${resort.telefono.replace(/\s/g, '')}`}>Chiama {resort.telefonoVisibile}</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .off { padding-bottom: clamp(5rem, 10vw, 8rem); }
+  .off-lista { list-style: none; padding: 0; margin: 0; display: grid; }
+  .off-lista li { display: grid; gap: 1rem 3rem; padding: 2rem 0; border-top: 1px solid var(--color-pietra); }
+  @media (min-width: 900px) { .off-lista li { grid-template-columns: 1fr 1.6fr; } }
+  .off-sconto { font-size: clamp(2.2rem, 4vw, 3.5rem); line-height: 1; color: var(--color-larice); }
+  .off-testo { margin-top: 0.75rem; color: var(--color-ardesia); max-width: 38rem; }
+  .off-nota { margin-top: 0.75rem; font-size: 0.875rem; }
+  .off-cta { margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+</style>

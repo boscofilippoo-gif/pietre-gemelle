@@ -1,0 +1,16 @@
+---
+// Il masso spaccato in due metà che si guardano. Le due metà condividono la stessa crepa.
+interface Props { class?: string; tratto?: boolean }
+const { class: className, tratto = false } = Astro.props;
+const crepa = 'L103 98 L96 76 L105 54 L94 31 L101 8';
+const sinistra = `M101 8 C72 2 38 14 20 40 C6 60 8 92 30 108 C46 118 74 118 99 116 ${crepa} Z`;
+const destra = `M101 8 C130 4 168 16 184 44 C198 68 192 98 170 110 C150 120 122 118 99 116 ${crepa} Z`;
+---
+<svg class:list={['pietre', className]} viewBox="-20 -6 240 132" aria-hidden="true" data-pietre>
+  <g class="pietra pietra-sx" data-pietra="sx">
+    <path d={sinistra} fill={tratto ? 'none' : 'currentColor'} stroke="currentColor" stroke-width={tratto ? 1.4 : 0} stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+  </g>
+  <g class="pietra pietra-dx" data-pietra="dx">
+    <path d={destra} fill={tratto ? 'none' : 'currentColor'} stroke="currentColor" stroke-width={tratto ? 1.4 : 0} stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+  </g>
+</svg>

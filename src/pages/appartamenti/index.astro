@@ -1,0 +1,107 @@
+---
+import Base from '../../layouts/Base.astro';
+import Foto from '../../components/Foto.astro';
+import Cresta from '../../components/Cresta.astro';
+import { appartamenti, tipi } from '../../data/resort';
+
+const filtri = [
+  { v: '0-9', label: 'Tutti' },
+  { v: '2-3', label: '2–3 persone' },
+  { v: '4-4', label: '4 persone' },
+  { v: '5-5', label: '5 persone' },
+  { v: '6-6', label: '6 persone' },
+];
+const copertina = (a: (typeof appartamenti)[number]) => (a.foto[0] ? `appartamenti/${a.foto[0]}` : null);
+---
+<Base
+  title="Appartamenti"
+  description="Sedici appartamenti con cucina, da 2 a 6 persone, ognuno con il nome di una vetta del Monte Rosa sopra i 4000 metri. Monolocali, bilocali, bilocali su due piani e suite."
+  image="appartamenti/punta-dufour-1"
+  schema={[{
+    '@context': 'https://schema.org', '@type': 'ItemList', name: 'Appartamenti',
+    itemListElement: appartamenti.map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: `https://www.pietregemelle.it/appartamenti/${a.slug}/`, name: `Appartamento ${a.nome}` })),
+  }]}
+>
+  <section class="app-head theme-light" data-theme="light">
+    <div class="wrap">
+      <p class="eyebrow" data-hero>Appartamenti</p>
+      <h1 class="display h1" data-hero>Sedici vette.<br />Scegliete la vostra.</h1>
+      <p class="lead muted app-lead" data-hero>Ogni appartamento ha il nome di un Quattromila del Monte Rosa. Tutti hanno la cucina, il riscaldamento autonomo, la biancheria. Le camere guardano la montagna.</p>
+    </div>
+    <div class="wrap app-cresta"><Cresta modo="indice" /></div>
+  </section>
+
+  <section class="app-lista theme-light" data-theme="light" aria-labelledby="lista-t">
+    <div class="wrap">
+      <div class="app-filtri" data-filtri role="group" aria-labelledby="lista-t">
+        <h2 id="lista-t" class="app-filtri-t">Quante persone?</h2>
+        {filtri.map((f, i) => <button type="button" data-filtro={f.v} aria-pressed={i === 0 ? 'true' : 'false'}>{f.label}</button>)}
+      </div>
+      <ul class="app-grid">
+        {appartamenti.map((a) => {
+          const img = copertina(a);
+          return (
+            <li data-ospiti={a.ospitiMax} data-reveal>
+              <a href={`/appartamenti/${a.slug}/`} class="app-card">
+                <div class="app-img">
+                  {img ? <Foto src={img} alt={`Interno dell’appartamento ${a.nome}`} sizes="(min-width: 1100px) 30vw, (min-width: 640px) 45vw, 100vw" widths={[480, 800]} />
+                       : <Foto src={`piantine/${a.piantina}`} alt={`Piantina dell’appartamento ${a.nome}`} sizes="30vw" widths={[480]} class="app-img-piantina" />}
+                  <span class="app-quota">{a.quota.toLocaleString('it-IT')} m</span>
+                </div>
+                <h3 class="display app-nome">{a.nome}</h3>
+                <p class="app-meta">{tipi[a.tipo].nome} · {a.ospiti} persone{a.baita && <> · baita {a.baita}</>}</p>
+                <p class="app-frase">{a.frase}</p>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+
+  <section class="app-tipi section theme-sand" data-theme="sand" aria-labelledby="tipi-t">
+    <div class="wrap">
+      <h2 id="tipi-t" class="display h2" data-split>Quattro modi di stare.</h2>
+      <dl class="tipi-grid">
+        {Object.entries(tipi).map(([k, t]) => (
+          <div data-reveal>
+            <dt class="display h3">{t.nome}</dt>
+            <dd>{t.descrizione}. {appartamenti.filter((a) => a.tipo === k).length} appartamenti.</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="tipi-nota muted">Tutti: angolo cottura (piastre elettriche, microonde, stoviglie), TV satellitare, WiFi, lenzuola e asciugamani. Lavastoviglie nelle due suite.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .app-head { padding-top: clamp(8rem, 16vw, 12rem); }
+  .app-lead { max-width: 38rem; margin-top: 1.75rem; }
+  .app-cresta { margin-top: clamp(2rem, 5vw, 4rem); padding-bottom: 1rem; }
+
+  .app-lista { padding-block: clamp(3rem, 6vw, 5rem) clamp(5rem, 10vw, 8rem); }
+  .app-filtri { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: 2.5rem; }
+  .app-filtri-t { font-size: 0.9375rem; font-weight: 560; margin-right: 0.75rem; }
+  .app-filtri button { min-height: 44px; padding: 0.55rem 1.1rem; border-radius: 999px; font-size: 0.9375rem; box-shadow: inset 0 0 0 1px var(--color-pietra); transition: background 0.3s, color 0.3s; }
+  .app-filtri button[aria-pressed='true'] { background: var(--color-granito); color: var(--color-neve); box-shadow: none; }
+
+  .app-grid { list-style: none; padding: 0; margin: 0; display: grid; gap: 3rem 1.5rem; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .app-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .app-grid { grid-template-columns: repeat(3, 1fr); } }
+  .app-card { display: grid; gap: 0.4rem; }
+  .app-img { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 0.35rem; background: var(--color-granito); margin-bottom: 0.75rem; }
+  .app-img :global(img), .app-img :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.2s var(--ease-monte); }
+  .app-img :global(.app-img-piantina) { object-fit: contain; padding: 1rem; }
+  .app-card:hover .app-img :global(img) { transform: scale(1.04); }
+  .app-quota { position: absolute; left: 0.75rem; bottom: 0.75rem; padding: 0.3rem 0.6rem; border-radius: 999px; background: rgb(19 23 26 / 0.7); color: var(--color-neve); font-size: 0.8125rem; font-variant-numeric: tabular-nums; backdrop-filter: blur(6px); }
+  .app-nome { font-size: clamp(1.8rem, 2.6vw, 2.4rem); line-height: 1.05; }
+  .app-meta { font-size: 0.875rem; font-weight: 560; color: var(--color-larice); }
+  .app-frase { color: var(--color-ardesia); font-size: 0.975rem; }
+
+  .tipi-grid { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .tipi-grid { grid-template-columns: repeat(4, 1fr); } }
+  .tipi-grid div { border-top: 1px solid var(--color-pietra); padding-top: 1.25rem; display: grid; gap: 0.5rem; }
+  .tipi-grid dd { color: var(--color-ardesia); }
+  .tipi-nota { margin-top: 3rem; max-width: 46rem; font-size: 0.9375rem; }
+</style>

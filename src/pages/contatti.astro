@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaSemplice from '../components/PaginaSemplice.astro';
+import V from '../components/V.astro';
+import { resort, integrazioni } from '../data/resort';
+const tel = resort.telefono.replace(/\s/g, '');
+const { lat, lng } = resort.geo;
+const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.012}%2C${lat - 0.006}%2C${lng + 0.012}%2C${lat + 0.006}&layer=mapnik&marker=${lat}%2C${lng}`;
+---
+<Base title="Contatti" description="Telefono, email e indirizzo di Pietre Gemelle Resort, Località Pietre Gemelle, Riva Valdobbia, Alagna Valsesia (VC).">
+  <PaginaSemplice eyebrow="Contatti" titolo="Chiamateci,<br />o scriveteci." />
+
+  <section class="ct theme-light" data-theme="light">
+    <div class="wrap ct-grid">
+      <div class="ct-dati">
+        <a href={`tel:${tel}`} class="ct-tel display">{resort.telefono}</a>
+        <p><a class="link" href={`mailto:${resort.email}`}><V nota="Il booking engine usa mail@pietregemelle.it: quale email è quella giusta?">{resort.email}</V></a></p>
+        <p class="ct-addr">{resort.indirizzo.via}<br />{resort.indirizzo.frazione}<br /><V nota="CAP 13021 nel footer del vecchio sito, 13020 nella pagina contatti e su Booking">{resort.indirizzo.cap}</V> {resort.indirizzo.comune} ({resort.indirizzo.provincia})</p>
+        <p class="muted">Reception: check-in {resort.orari.checkIn}.</p>
+        <p><a class="link-arrow" href={resort.mappa} rel="noopener">Apri in Google Maps <span aria-hidden="true">→</span></a></p>
+      </div>
+
+      <div class="ct-form-wrap">
+        <form class="ct-form" data-form-contatti action={integrazioni.formEndpoint ?? undefined} method="post" novalidate>
+          <h2 class="display h3">Un messaggio</h2>
+          <label>Nome<input name="nome" autocomplete="name" required /></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+          <label>Telefono <span class="muted">(facoltativo)</span><input name="telefono" type="tel" autocomplete="tel" /></label>
+          <label>Messaggio<textarea name="messaggio" rows="5" required placeholder="Date, numero di persone, cani, domande…"></textarea></label>
+          <label class="ct-check"><input type="checkbox" name="privacy" required /> <span>Ho letto l’<a class="link" href="/privacy/">informativa privacy</a>.</span></label>
+          <button type="submit" class="btn">Invia <span aria-hidden="true">→</span></button>
+          {!integrazioni.formEndpoint && <p class="ct-demo">Modulo dimostrativo: per ora non invia nulla.</p>}
+        </form>
+        <div class="ct-grazie" data-form-grazie tabindex="-1" hidden>
+          <h2 class="display h3">Grazie.</h2>
+          <p>Vi rispondiamo appena possibile. Se è urgente, chiamate il <a class="link" href={`tel:${tel}`}>{resort.telefonoVisibile}</a>.</p>
+          {!integrazioni.formEndpoint && <p class="ct-demo">(Dimostrazione: il messaggio non è stato inviato.)</p>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ct-mappa theme-light" data-theme="light" aria-label="Mappa">
+    <iframe title="Mappa: Pietre Gemelle Resort tra Riva Valdobbia e Alagna" src={osm} loading="lazy"></iframe>
+    <p class="wrap credit">Mappa © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a></p>
+  </section>
+</Base>
+
+<style>
+  .ct-grid { display: grid; gap: 3rem; padding-bottom: clamp(4rem, 8vw, 6rem); }
+  @media (min-width: 900px) { .ct-grid { grid-template-columns: 1fr 1.1fr; gap: 5rem; } }
+  .ct-dati { display: grid; gap: 1rem; align-content: start; }
+  .ct-tel { font-size: clamp(2.2rem, 5vw, 3.75rem); line-height: 1; }
+  .ct-tel:hover { color: var(--color-larice); }
+  .ct-addr { color: var(--color-ardesia); }
+  .ct-form { display: grid; gap: 1rem; padding: clamp(1.25rem, 3vw, 2rem); border-radius: 0.6rem; background: var(--color-calce); }
+  .ct-form label { display: grid; gap: 0.35rem; font-size: 0.875rem; font-weight: 560; }
+  .ct-form input, .ct-form textarea { font: inherit; font-weight: 400; font-size: 1rem; padding: 0.75rem 0.85rem; border-radius: 0.45rem; border: 1px solid var(--color-pietra); background: white; min-height: 48px; }
+  .ct-form input:user-invalid, .ct-form textarea:user-invalid { border-color: #b3261e; }
+  .ct-check { grid-template-columns: auto 1fr; align-items: start; font-weight: 400 !important; }
+  .ct-check input { min-height: 0; width: 20px; height: 20px; margin-top: 0.15rem; accent-color: var(--color-larice); }
+  .ct-form .btn { justify-self: start; }
+  .ct-demo { font-size: 0.8125rem; color: var(--color-larice); }
+  .ct-grazie { padding: 2rem; border-radius: 0.6rem; background: var(--color-calce); display: grid; gap: 0.75rem; }
+  .ct-mappa iframe { display: block; width: 100%; height: clamp(22rem, 50vh, 32rem); border: 0; filter: grayscale(0.6) contrast(0.95); }
+  .ct-mappa .credit { padding-block: 0.5rem 3rem; }
+</style>

@@ -1,0 +1,170 @@
+---
+import Base from '../layouts/Base.astro';
+import Foto from '../components/Foto.astro';
+import Pietre from '../components/Pietre.astro';
+import V from '../components/V.astro';
+import { pietre, baite, crediti } from '../data/resort';
+const incisione = crediti.find((c) => c.file === 'territorio/riva-valdobbia-incisione')!;
+---
+<Base
+  title="Il resort"
+  description="Due pietre gemelle che danno il nome al luogo, quattro baite di legno e pietra ristrutturate tra Riva Valdobbia e Alagna, davanti alla parete sud del Monte Rosa."
+  image="esterni/inverno-baite-monte-rosa"
+>
+  <section class="intro-pag theme-light" data-theme="light">
+    <div class="wrap">
+      <p class="eyebrow" data-hero>Il resort</p>
+      <h1 class="display h1" data-hero>Due pietre,<br />quattro baite.</h1>
+      <p class="lead intro-lead" data-hero>Tra Riva Valdobbia e Alagna, dove il Sesia scorre accanto alla strada, c’è un prato con quattro baite di legno e pietra. Tutte guardano il Monte Rosa.</p>
+    </div>
+    <div class="wrap-wide intro-foto" data-reveal-img>
+      <Foto src="esterni/inverno-baite-monte-rosa" alt="Le baite del resort sotto la neve, con il Monte Rosa sullo sfondo" priority sizes="100vw" />
+    </div>
+  </section>
+
+  <!-- Le pietre: i tre nomi -->
+  <section class="nomi theme-sand" data-theme="sand" data-pin-pietre aria-labelledby="nomi-t">
+    <div class="nomi-stage">
+      <Pietre class="nomi-svg" tratto />
+      <div class="nomi-frasi">
+        <div data-frase class="nomi-frase">
+          <h2 id="nomi-t" class="eyebrow">Il nome</h2>
+          <p class="display h3">Un masso rotolò dal fianco del monte. Toccando il fondo della valle si spaccò in due metà uguali, che sembrano guardarsi in faccia.</p>
+        </div>
+        {pietre.nomi.map((n) => (
+          <div data-frase class="nomi-frase">
+            <p class="nomi-lingua">in {n.lingua}</p>
+            <p class="display nomi-nome">{n.nome}</p>
+          </div>
+        ))}
+        <div data-frase class="nomi-frase">
+          <p class="display h3">Le due pietre hanno dato il nome a tutta la comunità di Riva e Alagna. Sono ancora qui, nel giardino del resort.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Unico elemento d'epoca: l'incisione e il documento -->
+  <section class="epoca section theme-light" data-theme="light" aria-labelledby="epoca-t">
+    <div class="wrap epoca-grid">
+      <figure class="epoca-img" data-reveal>
+        <Foto src="territorio/riva-valdobbia-incisione" alt="Incisione antica di Riva Valdobbia vista dalla sinistra del Sesia, con il Monte Rosa sullo sfondo" sizes="(min-width: 900px) 55vw, 100vw" />
+        <figcaption class="credit">Riva Valdobbia dalla sinistra del Sesia, incisione di <a href={incisione.url}>{incisione.autore}</a> · {incisione.licenza}</figcaption>
+      </figure>
+      <div class="epoca-testo">
+        <h2 id="epoca-t" class="eyebrow">Dal {pietre.documento.anno}</h2>
+        <p class="epoca-citazione display"><V nota={`Fonte: ${pietre.documento.fonte}, citato dal vecchio sito. Da verificare.`}>«{pietre.documento.citazione}»</V></p>
+        <p class="muted">Il più antico documento che nomina il luogo è il giuramento di fedeltà dei valsesiani a Vercelli, nel <V>{pietre.documento.anno}</V>. Fino al <V>{pietre.divisione}</V> Riva e Alagna erano una sola comunità, e si chiamava Pietre Gemelle.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Le quattro baite -->
+  <section class="baite section theme-dark" data-theme="dark" aria-labelledby="baite-t">
+    <div class="wrap baite-head">
+      <h2 id="baite-t" class="display h2" data-split>Quattro baite, i nomi dei paesi del Rosa.</h2>
+      <p class="lead" data-reveal>Le baite sono nate dalla ristrutturazione dei vecchi edifici dell’area. Il progetto degli architetti Claudia Colla e Davide Gavinelli è iniziato nel 2005; il resort ha aperto nell’inverno 2007.</p>
+    </div>
+    <ul class="wrap baite-nomi" aria-label="Le quattro baite">
+      {baite.map((b, i) => <li class="display" data-reveal={i * 0.06}>{b}</li>)}
+    </ul>
+    <div class="wrap baite-foto">
+      <div class="bf-1" data-reveal-img><Foto src="esterni/estate-baite-monte-rosa" alt="Tre baite di legno sul prato verde, con il Monte Rosa innevato dietro" sizes="(min-width: 900px) 60vw, 100vw" /></div>
+      <div class="bf-2" data-reveal-img><Foto src="esterni/tetti-innevati" alt="Tetti di pietra coperti di neve" sizes="(min-width: 900px) 35vw, 100vw" /></div>
+    </div>
+  </section>
+
+  <!-- Materiali -->
+  <section class="materiali section theme-light" data-theme="light" aria-labelledby="mat-t">
+    <div class="wrap">
+      <h2 id="mat-t" class="display h2" data-split>Di cosa sono fatte.</h2>
+    </div>
+    <ol class="wrap materiali-lista">
+      <li data-reveal>
+        <div class="mat-img"><Foto src="appartamenti/castore-1" alt="Soggiorno con pavimento in larice e travi a vista" sizes="(min-width: 900px) 30vw, 100vw" /></div>
+        <h3 class="display h3">Larice</h3>
+        <p>Sui pavimenti, sulle pareti, nelle balconate costruite a incastri, come facevano i falegnami walser.</p>
+      </li>
+      <li data-reveal="0.08">
+        <div class="mat-img"><Foto src="appartamenti/punta-giordani-2" alt="Bagno con pavimento e doccia in pietra di Luserna" sizes="(min-width: 900px) 30vw, 100vw" /></div>
+        <h3 class="display h3">Luserna</h3>
+        <p>La pietra grigia delle Alpi piemontesi, nelle cucine e nei bagni.</p>
+      </li>
+      <li data-reveal="0.16">
+        <div class="mat-img"><Foto src="appartamenti/piramide-vincent-1" alt="Soggiorno con porte-finestra a tutta altezza e tavolo in legno" sizes="(min-width: 900px) 30vw, 100vw" /></div>
+        <h3 class="display h3">Vetro</h3>
+        <p>Finestre a tutta altezza: a nord la parete del Rosa, a sud il sole su Riva Valdobbia.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Il giardino -->
+  <section class="giardino theme-sand" data-theme="sand" aria-labelledby="giardino-t">
+    <div class="giardino-img" data-reveal-img><Foto src="esterni/notte-reception-masso" alt="Il padiglione della reception di notte, accanto a un grande masso innevato" sizes="(min-width: 900px) 50vw, 100vw" /></div>
+    <div class="giardino-testo">
+      <h2 id="giardino-t" class="display h2" data-split>Fuori, il prato.</h2>
+      <p class="lead" data-reveal>Giochi per i bambini, il barbecue, il deposito sci riscaldato. La reception è nel padiglione di legno e vetro, accanto alla roccia.</p>
+      <p data-reveal>Gli ospiti raccontano delle mucche al pascolo e di un asinello. I cani sono i benvenuti.</p>
+      <div class="giardino-cta" data-reveal>
+        <a href="/appartamenti/" class="btn">Scegli l’appartamento <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro-pag { padding-top: clamp(8rem, 16vw, 12rem); }
+  .intro-lead { max-width: 36rem; margin-top: 1.75rem; color: var(--color-ardesia); }
+  .wrap-wide { width: min(100% - 2rem, 100rem); margin-inline: auto; }
+  .intro-foto { margin-top: clamp(3rem, 6vw, 5rem); aspect-ratio: 16 / 8; overflow: hidden; border-radius: 0.35rem; }
+  @media (max-width: 767px) { .intro-foto { aspect-ratio: 4 / 3; } }
+  .intro-foto :global(img), .intro-foto :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .nomi { height: 100svh; overflow: hidden; margin-top: clamp(5rem, 10vw, 8rem); }
+  .nomi-stage { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(1.5rem, 4vh, 3rem); padding-top: 3rem; }
+  .nomi-stage :global(.nomi-svg) { width: min(56vw, 20rem); height: auto; color: var(--color-ardesia); overflow: visible; flex: none; }
+  .nomi-frasi { position: relative; display: grid; place-items: start center; width: 100%; min-height: 15rem; }
+  .nomi-frase { grid-area: 1 / 1; text-align: center; width: min(100% - 2rem, 44rem); display: grid; gap: 0.75rem; justify-items: center; }
+  :global(html.js:not(.reduce)) .nomi-frase:not(:first-child) { opacity: 0; }
+  .nomi-frase .h3 { font-size: clamp(1.6rem, 3vw, 2.8rem); line-height: 1.1; }
+  .nomi-lingua { font-size: 0.8125rem; font-weight: 560; letter-spacing: 0.06em; color: var(--color-larice); }
+  .nomi-nome { font-size: clamp(3rem, 9vw, 6.5rem); line-height: 1; }
+  :global(html.reduce) .nomi { height: auto; padding-block: 6rem; }
+  :global(html.reduce) .nomi-stage { display: block; }
+  :global(html.reduce) .nomi-frasi { gap: 3rem; margin-top: 3rem; }
+  :global(html.reduce) .nomi-frase { grid-area: auto; }
+
+  .epoca-grid { display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .epoca-grid { grid-template-columns: 1.3fr 1fr; align-items: center; gap: 5rem; } }
+  .epoca-img :global(img) { width: 100%; height: auto; display: block; filter: contrast(1.05); }
+  .epoca-img figcaption { margin-top: 0.75rem; }
+  .epoca-testo { display: grid; gap: 1.25rem; }
+  .epoca-citazione { font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.12; font-style: italic; }
+
+  .baite-head { display: grid; gap: 1.5rem; }
+  @media (min-width: 900px) { .baite-head { grid-template-columns: 1.2fr 1fr; align-items: end; } }
+  .baite-head .lead { color: rgb(243 241 236 / 0.8); }
+  .baite-nomi { list-style: none; padding: 0; margin-top: clamp(3rem, 6vw, 5rem); display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid rgb(255 255 255 / 0.15); }
+  @media (min-width: 900px) { .baite-nomi { grid-template-columns: repeat(4, 1fr); } }
+  .baite-nomi li { font-size: clamp(2rem, 4vw, 3.5rem); padding: 1.25rem 0; border-bottom: 1px solid rgb(255 255 255 / 0.15); }
+  .baite-foto { margin-top: clamp(3rem, 6vw, 5rem); display: grid; gap: 1rem; }
+  @media (min-width: 900px) { .baite-foto { grid-template-columns: 1.7fr 1fr; align-items: end; } }
+  .baite-foto > div { overflow: hidden; border-radius: 0.35rem; }
+  .bf-1 { aspect-ratio: 16 / 10; }
+  .bf-2 { aspect-ratio: 3 / 4; }
+  .baite-foto :global(img), .baite-foto :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .materiali-lista { list-style: none; padding: 0; margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; gap: 2.5rem; }
+  @media (min-width: 900px) { .materiali-lista { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
+  .materiali-lista li { display: grid; gap: 0.75rem; align-content: start; }
+  .materiali-lista p { color: var(--color-ardesia); }
+  .mat-img { aspect-ratio: 4 / 3; overflow: hidden; border-radius: 0.35rem; margin-bottom: 0.5rem; }
+  .mat-img :global(img), .mat-img :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .giardino { display: grid; }
+  @media (min-width: 900px) { .giardino { grid-template-columns: 1fr 1fr; min-height: 90svh; } }
+  .giardino-img { overflow: hidden; min-height: 50svh; }
+  .giardino-img :global(img), .giardino-img :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .giardino-testo { padding: clamp(3rem, 7vw, 7rem) clamp(1rem, 6vw, 6rem); display: grid; gap: 1.25rem; align-content: center; }
+  .giardino-cta { margin-top: 1rem; }
+</style>

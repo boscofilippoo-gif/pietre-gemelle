@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+import Foto from '../../components/Foto.astro';
+import { stagioni, amici, crediti, type Stagione } from '../../data/resort';
+
+export function getStaticPaths() {
+  return stagioni.map((s) => ({ params: { stagione: s.slug }, props: { s } }));
+}
+interface Props { s: Stagione }
+const { s } = Astro.props;
+const altre = stagioni.filter((x) => x.slug !== s.slug);
+const credito = crediti.find((c) => c.file === s.foto);
+const descrizioni: Record<Stagione['slug'], string> = {
+  inverno: 'Inverno ad Alagna dal Pietre Gemelle Resort: Monterosa Ski a 2 km, freeride, heliski, sci alpinismo, fondo, ciaspole e cascate di ghiaccio.',
+  primavera: 'Primavera in Alta Valsesia: rafting, canoa, kayak e hydrospeed sul Sesia, sci alpinismo in quota, pesca nei torrenti.',
+  estate: 'Estate in Alta Valsesia: escursioni in Valle Vogna e Valle Otro, alpinismo fino alla Capanna Margherita, Tour del Monte Rosa, mountain bike e parapendio.',
+  autunno: 'Autunno in Alta Valsesia: escursioni tra i larici d’oro, funghi con il permesso dell’Unione Montana, pesca a fine stagione.',
+};
+---
+<Base title={`${s.nome} in valle`} description={descrizioni[s.slug]} image={s.foto}>
+  <section class="st-hero theme-night" data-theme="clear">
+    <div class="st-hero-img"><Foto src={s.foto} alt="" priority sizes="100vw" /></div>
+    <div class="wrap st-hero-testo">
+      <p class="eyebrow" data-hero><a href="/la-valle/" class="link">La valle</a></p>
+      <h1 class="display h1" data-hero>{s.nome}</h1>
+      <p class="lead" data-hero>{s.frase}</p>
+    </div>
+    {credito && <p class="credit st-credit">Foto: <a href={credito.url}>{credito.autore}</a>, {credito.licenza}</p>}
+  </section>
+
+  <section class="st-lista section theme-light" data-theme="light" aria-label={`Cosa fare in ${s.nome.toLowerCase()}`}>
+    <ol class="wrap st-att">
+      {s.attivita.map((a, i) => (
+        <li data-reveal>
+          <span class="st-n">{String(i + 1).padStart(2, '0')}</span>
+          <h2 class="display h3">{a.nome}</h2>
+          <div class="st-dx">
+            <p>{a.testo}</p>
+            {a.amici && (
+              <p class="st-amici">Con: {a.amici.map((k, j) => {
+                const am = amici[k];
+                return <>{j > 0 && ', '}{am.url ? <a class="link" href={am.url} rel="noopener">{am.nome}</a> : am.nome}</>;
+              })}</p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="wrap st-nota muted">Chiedete in reception: ci sono le cartine dei sentieri e vi mettiamo in contatto con guide e istruttori.</p>
+  </section>
+
+  <nav class="st-altre theme-sand" data-theme="sand" aria-label="Altre stagioni">
+    <ul class="wrap st-altre-grid">
+      {altre.map((x) => (
+        <li><a href={`/la-valle/${x.slug}/`} class="st-altra"><span class="display h3">{x.nome}</span><span class="muted">{x.frase}</span></a></li>
+      ))}
+    </ul>
+  </nav>
+</Base>
+
+<style>
+  .st-hero { position: relative; min-height: 80svh; display: grid; align-items: end; overflow: hidden; }
+  .st-hero-img { position: absolute; inset: 0; }
+  .st-hero-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(10 12 14 / 0.35), rgb(10 12 14 / 0.05) 40%, rgb(10 12 14 / 0.75)); }
+  .st-hero-img :global(img), .st-hero-img :global(picture) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .st-hero-testo { position: relative; padding-bottom: clamp(4rem, 9vh, 7rem); display: grid; gap: 1rem; }
+  .st-hero-testo .lead { max-width: 30rem; color: rgb(243 241 236 / 0.88); }
+  .st-credit { position: absolute; right: 1rem; bottom: 0.75rem; color: var(--color-neve); }
+  .st-att { list-style: none; padding: 0; margin-block: 0; display: grid; }
+  .st-att li { display: grid; gap: 0.5rem 2rem; padding: 1.75rem 0; border-top: 1px solid var(--color-pietra); }
+  @media (min-width: 900px) { .st-att li { grid-template-columns: 4rem 1fr 1.4fr; align-items: baseline; } }
+  .st-n { font-size: 0.8125rem; font-variant-numeric: tabular-nums; color: var(--color-larice); font-weight: 560; }
+  .st-dx p { color: var(--color-ardesia); }
+  .st-amici { margin-top: 0.5rem; font-size: 0.9375rem; }
+  .st-nota { margin-top: 2.5rem; font-size: 0.9375rem; }
+  .st-altre { padding-block: clamp(3rem, 6vw, 5rem); }
+  .st-altre-grid { list-style: none; padding: 0; display: grid; gap: 1.5rem; }
+  @media (min-width: 900px) { .st-altre-grid { grid-template-columns: repeat(3, 1fr); } }
+  .st-altra { display: grid; gap: 0.35rem; border-top: 1px solid var(--color-pietra); padding-top: 1rem; }
+  .st-altra:hover .display { color: var(--color-larice); }
+</style>

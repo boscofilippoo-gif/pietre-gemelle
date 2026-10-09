@@ -1,0 +1,406 @@
+[
+ {
+  "da": "/",
+  "a": "/"
+ },
+ {
+  "da": "/it_it/photogallery/",
+  "a": "/il-resort/"
+ },
+ {
+  "da": "/it_it/panorama/",
+  "a": "/info-pratiche/"
+ },
+ {
+  "da": "/it_it/appartamento-balmenhorn/",
+  "a": "/appartamenti/balmenhorn/"
+ },
+ {
+  "da": "/it_it/appartamento-breithorn/",
+  "a": "/appartamenti/breithorn/"
+ },
+ {
+  "da": "/it_it/appartamento-castore/",
+  "a": "/appartamenti/castore/"
+ },
+ {
+  "da": "/it_it/appartamento-corno-nero/",
+  "a": "/appartamenti/corno-nero/"
+ },
+ {
+  "da": "/it_it/appartamento-ludwigshohe/",
+  "a": "/appartamenti/ludwigshohe/"
+ },
+ {
+  "da": "/it_it/appartamento-lyskamm-orientale/",
+  "a": "/appartamenti/lyskamm-orientale/"
+ },
+ {
+  "da": "/it_it/appartamento-piramide-vincent/",
+  "a": "/appartamenti/piramide-vincent/"
+ },
+ {
+  "da": "/it_it/appartamento-polluce/",
+  "a": "/appartamenti/polluce/"
+ },
+ {
+  "da": "/it_it/appartamento-punta-dufour/",
+  "a": "/appartamenti/punta-dufour/"
+ },
+ {
+  "da": "/it_it/appartamento-punta-gnifetti/",
+  "a": "/appartamenti/punta-gnifetti/"
+ },
+ {
+  "da": "/it_it/appartamento-punta-nordend/",
+  "a": "/appartamenti/punta-nordend/"
+ },
+ {
+  "da": "/it_it/appartamento-punta-parrot/",
+  "a": "/appartamenti/punta-parrot/"
+ },
+ {
+  "da": "/it_it/appartamento-punta-zumstein/",
+  "a": "/appartamenti/punta-zumstein/"
+ },
+ {
+  "da": "/it_it/appartamento-roccia-nera/",
+  "a": "/appartamenti/roccia-nera/"
+ },
+ {
+  "da": "/it_it/anniversario-di-matrimonio/",
+  "a": "/offerte/"
+ },
+ {
+  "da": "/it_it/buon-compleanno-a-pietre-gemelle-resort/",
+  "a": "/offerte/"
+ },
+ {
+  "da": "/it_it/alpenstop-bar-ristorante/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/autonoleggio-monterosa/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/cocktail-bar-la-tavernetta/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/caffe-delle-guide/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/corpo-guide-alagna/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/eddyline-scuola-di-canoa-e-sport-fluviali/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/free-fly-paradise-monterosa/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/guida-mtb/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/la-tabaccheria-di-barbara-giordano/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/marzia-fuselli-guida-naturalistica/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/montagna-di-luce-ristorante-tipico-valsesiano/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/monterosa-sky-shuttle/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/scuole-sci-di-alagna/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/un-premio-importante-per-la-nostra-spa/",
+  "a": "/spa/"
+ },
+ {
+  "da": "/it_it/webcams/",
+  "a": "/info-pratiche/"
+ },
+ {
+  "da": "/it_it/freeride/",
+  "a": "/la-valle/inverno/"
+ },
+ {
+  "da": "/it_it/heliski/",
+  "a": "/la-valle/inverno/"
+ },
+ {
+  "da": "/it_it/sci-alpinismo/",
+  "a": "/la-valle/inverno/"
+ },
+ {
+  "da": "/it_it/sci-di-fondo/",
+  "a": "/la-valle/inverno/"
+ },
+ {
+  "da": "/it_it/cascate-di-ghiaccio/",
+  "a": "/la-valle/inverno/"
+ },
+ {
+  "da": "/it_it/racchette-da-neve/",
+  "a": "/la-valle/inverno/"
+ },
+ {
+  "da": "/it_it/pesca-in-primavera/",
+  "a": "/la-valle/primavera/"
+ },
+ {
+  "da": "/it_it/rafting/",
+  "a": "/la-valle/primavera/"
+ },
+ {
+  "da": "/it_it/canoa/",
+  "a": "/la-valle/primavera/"
+ },
+ {
+  "da": "/it_it/kayak/",
+  "a": "/la-valle/primavera/"
+ },
+ {
+  "da": "/it_it/torrentismo/",
+  "a": "/la-valle/primavera/"
+ },
+ {
+  "da": "/it_it/escursionismo/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/trekking/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/alpinismo/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/tour-del-monte-rosa/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/gta/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/arrampicata/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/mountain-bike/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/pesca-estiva/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/equitazione/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/parapendio/",
+  "a": "/la-valle/estate/"
+ },
+ {
+  "da": "/it_it/ricerca-funghi/",
+  "a": "/la-valle/autunno/"
+ },
+ {
+  "da": "/it_it/appartamenti/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/partner_collaboratori/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/promozioni/",
+  "a": "/offerte/"
+ },
+ {
+  "da": "/it_it/cookie-policy-ue/",
+  "a": "/cookie/"
+ },
+ {
+  "da": "/it_it/privacy-policy/",
+  "a": "/privacy/"
+ },
+ {
+  "da": "/it_it/contatti/",
+  "a": "/contatti/"
+ },
+ {
+  "da": "/it_it/pietregemelle/",
+  "a": "/il-resort/"
+ },
+ {
+  "da": "/it_it/home/",
+  "a": "/"
+ },
+ {
+  "da": "/it_it/hydrospeed/",
+  "a": "/la-valle/primavera/"
+ },
+ {
+  "da": "/it_it/complesso_turistico/",
+  "a": "/il-resort/"
+ },
+ {
+  "da": "/it_it/appartamento-lyskamm-occidentale/",
+  "a": "/appartamenti/lyskamm-occidentale/"
+ },
+ {
+  "da": "/it_it/appartamento-punta-giordani/",
+  "a": "/appartamenti/punta-giordani/"
+ },
+ {
+  "da": "/it_it/alagna-outdoor/",
+  "a": "/la-valle/#amici-della-valle"
+ },
+ {
+  "da": "/it_it/sci/",
+  "a": "/la-valle/inverno/"
+ },
+ {
+  "da": "/it_it/pattinaggio-su-ghiaccio/",
+  "a": "/la-valle/inverno/"
+ },
+ {
+  "da": "/it_it/pesca-in-autunno/",
+  "a": "/la-valle/autunno/"
+ },
+ {
+  "da": "/it_it/scopri-i-massaggi-che-abbiamo-pensato-per-te/",
+  "a": "/spa/"
+ },
+ {
+  "da": "/it_it/promozione-happy-ski-inverno-2023-2024/",
+  "a": "/offerte/"
+ },
+ {
+  "da": "/it_it/news-ed-eventi/",
+  "a": "/offerte/"
+ },
+ {
+  "da": "/it_it/orari-navetta-pubblica-inverno-2023-2024/",
+  "a": "/info-pratiche/"
+ },
+ {
+  "da": "/it_it/wellness-area-spa/",
+  "a": "/spa/"
+ },
+ {
+  "da": "/it_it/rooms/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/rooms/camera-tripla/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/rooms/camera-quadrupla/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/rooms/junior-suite/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/rooms/balmenhorn/",
+  "a": "/appartamenti/balmenhorn/"
+ },
+ {
+  "da": "/it_it/services/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/wi-fi-free/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/concierge/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/non-smoking-room/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/aria-condizionata/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/balcone/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/tv-a-schermo-piatto/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/family-room/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/vasca-o-doccia/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/prodotti-da-bagno-in-omaggio/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/asciugacapelli/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/telefono/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/reception-24-ore-su-24/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/pet-friendly/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/cassaforte-per-computer-portatile/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/2_ambienti/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/services/minibar/",
+  "a": "/appartamenti/"
+ },
+ {
+  "da": "/it_it/3d-flip-book/",
+  "a": "/spa/"
+ },
+ {
+  "da": "/it_it/3d-flip-book/pietre-gemelle-wellness-2/",
+  "a": "/spa/"
+ }
+]

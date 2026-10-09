@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import 'lenis/dist/lenis.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import Prenota from '../components/Prenota.astro';
+import Intro from '../components/Intro.astro';
+import { resort, appartamenti } from '../data/resort';
+import { foto } from '../lib/foto';
+import { getImage } from 'astro:assets';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string; // chiave foto per Open Graph
+  schema?: Record<string, unknown>[];
+}
+const { title, description, image = 'esterni/notte-neve-baite', schema = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const og = await getImage({ src: foto(image), width: 1200, format: 'jpg' });
+const ogUrl = new URL(og.src, Astro.site).href;
+const fullTitle = Astro.url.pathname === '/' ? `${resort.nome} · Appartamenti e SPA davanti al Monte Rosa, Alagna Valsesia` : `${title} · ${resort.nome}`;
+
+const hotel = {
+  '@context': 'https://schema.org',
+  '@type': 'LodgingBusiness',
+  '@id': `${Astro.site}#resort`,
+  name: resort.nome,
+  description: 'Sedici appartamenti in quattro baite di legno e pietra con SPA, tra Riva Valdobbia e Alagna Valsesia, davanti al Monte Rosa.',
+  url: Astro.site?.href,
+  telephone: resort.telefono,
+  email: resort.email,
+  image: ogUrl,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${resort.indirizzo.via}, ${resort.indirizzo.frazione}`,
+    postalCode: resort.indirizzo.cap,
+    addressLocality: resort.indirizzo.comune,
+    addressRegion: resort.indirizzo.provincia,
+    addressCountry: resort.indirizzo.paese,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: resort.geo.lat, longitude: resort.geo.lng },
+  hasMap: resort.mappa,
+  checkinTime: '15:00',
+  checkoutTime: '10:00',
+  petsAllowed: true,
+  numberOfRooms: appartamenti.length,
+  amenityFeature: ['SPA', 'Sauna', 'Idromassaggio', 'Parcheggio gratuito', 'WiFi gratuito', 'Deposito sci', 'Giardino con giochi'].map((name) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
+  sameAs: [resort.social.instagram, resort.social.facebook],
+};
+---
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {process.env.ANTEPRIMA === '1' && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:site_name" content={resort.nome} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#1d2124" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script is:inline>
+      // Classi iniziali: JS attivo, movimento ridotto, apertura solo al primo arrivo o alla ricarica.
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) d.classList.add('reduce');
+        var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+        var reload = nav && nav.type === 'reload';
+        var seen = false;
+        try { seen = sessionStorage.getItem('pg-intro') === '1'; } catch (e) {}
+        if (!reduce && (reload || !seen)) d.classList.add('show-intro');
+        try { sessionStorage.setItem('pg-intro', '1'); } catch (e) {}
+      })();
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify([hotel, ...schema])} />
+  </head>
+  <body>
+    <a href="#contenuto" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[200] focus:bg-neve focus:p-3">Vai al contenuto</a>
+    <Intro />
+    <Header />
+    <main id="contenuto">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+    <Prenota />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

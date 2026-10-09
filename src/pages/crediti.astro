@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import PaginaSemplice from '../components/PaginaSemplice.astro';
+import { crediti } from '../data/resort';
+---
+<Base title="Crediti foto" description="Crediti delle fotografie usate nel sito di Pietre Gemelle Resort.">
+  <PaginaSemplice eyebrow="Crediti" titolo="Chi ha scattato le foto" lead="Le foto del resort, degli appartamenti e della SPA sono della struttura. Le foto del territorio vengono da Wikimedia Commons, con queste licenze." />
+  <section class="cr theme-light" data-theme="light">
+    <ul class="wrap cr-lista">
+      {crediti.map((c) => (
+        <li><a class="link" href={c.url} rel="noopener">{c.titolo}</a><span class="muted">{c.autore} · {c.licenza}</span></li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .cr { padding-bottom: clamp(5rem, 10vw, 8rem); }
+  .cr-lista { list-style: none; padding: 0; display: grid; }
+  .cr-lista li { display: grid; gap: 0.2rem; padding: 1rem 0; border-top: 1px solid var(--color-pietra); }
+</style>

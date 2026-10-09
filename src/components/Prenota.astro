@@ -1,0 +1,45 @@
+---
+// Finestra "Verifica disponibilità": costruisce il link al booking engine 5stelle*
+// con le date scelte. Il sito non gestisce prenotazioni da sé.
+import { linkPrenotazione, resort } from '../data/resort';
+---
+<dialog class="prenota" data-prenota aria-labelledby="prenota-titolo">
+  <form method="dialog" class="prenota-form" data-prenota-form>
+    <div class="prenota-head">
+      <h2 id="prenota-titolo" class="display h3">Quando arrivate?</h2>
+      <button type="submit" value="chiudi" class="prenota-x" aria-label="Chiudi" formnovalidate>×</button>
+    </div>
+    <p class="prenota-chiuso" data-stato-chiuso hidden></p>
+    <div class="prenota-grid">
+      <label>Arrivo<input type="date" name="arrivo" required data-arrivo /></label>
+      <label>Partenza<input type="date" name="partenza" required data-partenza /></label>
+      <label>Adulti
+        <select name="adulti">
+          {[1, 2, 3, 4, 5, 6].map((n) => <option value={n} selected={n === 2}>{n}</option>)}
+        </select>
+      </label>
+    </div>
+    <button type="submit" value="cerca" class="btn prenota-cerca">Vedi appartamenti liberi <span aria-hidden="true">→</span></button>
+    <p class="prenota-nota">Si apre il sistema di prenotazione del resort. Con bambini, cani o richieste particolari, chiamate il <a class="link" href={`tel:${resort.telefono.replace(/\s/g, '')}`}>{resort.telefonoVisibile}</a>.</p>
+  </form>
+</dialog>
+<script is:inline define:vars={{ base: linkPrenotazione() }}>
+  window.__PG_BOOKING = base;
+</script>
+
+<style>
+  .prenota { margin: auto; width: min(100% - 2rem, 34rem); border: 0; padding: 0; border-radius: 1rem; background: var(--color-neve); color: var(--color-granito); box-shadow: 0 30px 80px rgb(0 0 0 / 0.35); }
+  .prenota::backdrop { background: rgb(19 23 26 / 0.6); backdrop-filter: blur(4px); }
+  .prenota[open] { animation: pop 0.4s var(--ease-monte); }
+  @keyframes pop { from { opacity: 0; transform: translateY(16px) scale(0.98); } }
+  .prenota-form { padding: 1.75rem; display: grid; gap: 1.25rem; }
+  .prenota-head { display: flex; justify-content: space-between; align-items: start; }
+  .prenota-x { font-size: 2rem; line-height: 1; width: 44px; height: 44px; margin: -0.5rem -0.5rem 0 0; }
+  .prenota-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  .prenota-grid label:last-child { grid-column: span 2; }
+  .prenota label { display: grid; gap: 0.35rem; font-size: 0.8125rem; font-weight: 560; }
+  .prenota input, .prenota select { font: inherit; font-size: 1rem; font-weight: 400; padding: 0.75rem 0.85rem; border-radius: 0.5rem; border: 1px solid var(--color-pietra); background: white; min-height: 48px; }
+  .prenota-cerca { justify-content: center; }
+  .prenota-nota { font-size: 0.8125rem; opacity: 0.75; }
+  .prenota-chiuso { font-size: 0.875rem; padding: 0.7rem 0.9rem; border-radius: 0.5rem; background: var(--color-calce); }
+</style>

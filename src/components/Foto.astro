@@ -1,0 +1,29 @@
+---
+import { Picture } from 'astro:assets';
+import { foto } from '../lib/foto';
+
+interface Props {
+  src: string; // chiave, es. "esterni/notte-neve-baite"
+  alt: string;
+  sizes?: string;
+  priority?: boolean;
+  class?: string;
+  widths?: number[];
+}
+const { src, alt, sizes = '100vw', priority = false, class: className, widths } = Astro.props;
+const img = foto(src);
+const base = widths ?? [480, 800, 1200, 1600];
+const ws = Array.from(new Set([...base.filter((x) => x < img.width), img.width]));
+---
+<Picture
+  src={img}
+  alt={alt}
+  formats={['avif', 'webp']}
+  widths={ws}
+  sizes={sizes}
+  layout="none"
+  class={className}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding={priority ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : 'auto'}
+/>

@@ -1,0 +1,66 @@
+---
+import Logo from './Logo.astro';
+import Cresta from './Cresta.astro';
+import { resort, nav } from '../data/resort';
+const anno = new Date().getFullYear();
+const tel = resort.telefono.replace(/\s/g, '');
+---
+<footer class="footer theme-night" data-theme="night">
+  <div class="footer-cresta" aria-hidden="true"><Cresta modo="linea" /></div>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <Logo />
+      <p class="footer-claim display">Davanti al Monte Rosa,<br />tra Riva Valdobbia e Alagna.</p>
+    </div>
+    <div>
+      <h2 class="footer-h">Scriveteci o chiamateci</h2>
+      <p><a class="link" href={`tel:${tel}`}>{resort.telefono}</a><br />
+      <a class="link" href={`mailto:${resort.email}`}>{resort.email}</a></p>
+      <p class="footer-addr">{resort.indirizzo.via}<br />{resort.indirizzo.frazione}<br />{resort.indirizzo.cap} {resort.indirizzo.comune} ({resort.indirizzo.provincia})</p>
+    </div>
+    <div>
+      <h2 class="footer-h">Il sito</h2>
+      <ul class="footer-list">
+        {nav.map((n) => <li><a class="link" href={n.href}>{n.label}</a></li>)}
+        <li><a class="link" href="/offerte/">Offerte</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="footer-h">Seguiteci</h2>
+      <ul class="footer-list">
+        <li><a class="link" href={resort.social.instagram} rel="noopener">Instagram</a></li>
+        <li><a class="link" href={resort.social.facebook} rel="noopener">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-legal">
+    <p>
+      © {anno} {resort.nome} · {resort.legale.ragioneSociale}, {resort.legale.sede} · P.IVA {resort.legale.piva}<br />
+      CIR {resort.legale.cir} · CIN {resort.legale.cin}
+    </p>
+    <p class="footer-links">
+      <a class="link" href="/privacy/">Privacy</a>
+      <a class="link" href="/cookie/">Cookie</a>
+      <a class="link" href="/crediti/">Crediti foto</a>
+      <span class="footer-gruppo">Dello stesso gruppo: {resort.gruppo.map((h, i) => <>{i > 0 && ', '}<a class="link" href={h.url} rel="noopener">{h.nome}</a></>)} a Rimini</span>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer { position: relative; padding: 0 0 7rem; overflow: hidden; }
+  @media (min-width: 768px) { .footer { padding-bottom: 2.5rem; } }
+  .footer-cresta { height: clamp(5rem, 12vw, 10rem); color: var(--color-ardesia); margin-bottom: 3rem; }
+  .footer-grid { display: grid; gap: 2.5rem 1.5rem; grid-template-columns: 1fr 1fr; }
+  .footer-grid > :nth-child(-n+2) { grid-column: 1 / -1; }
+  @media (min-width: 768px) { .footer-grid > :nth-child(-n+2) { grid-column: auto; } }
+  @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1.3fr 1fr 1fr; } }
+  .footer-brand { font-size: 1rem; }
+  .footer-claim { margin-top: 1.25rem; font-size: clamp(1.6rem, 2.6vw, 2.2rem); line-height: 1.1; color: var(--color-pietra); }
+  .footer-h { font-size: 0.8125rem; font-weight: 560; color: var(--color-larice-chiaro); margin-bottom: 0.75rem; }
+  .footer-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.35rem; }
+  .footer-addr { margin-top: 1rem; opacity: 0.75; font-size: 0.9375rem; }
+  .footer-legal { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid rgb(255 255 255 / 0.12); display: grid; gap: 0.75rem; font-size: 0.8125rem; color: rgb(243 241 236 / 0.7); }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+  .footer-gruppo { opacity: 0.8; }
+</style>
